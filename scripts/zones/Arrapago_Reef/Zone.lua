@@ -1,0 +1,69 @@
+-----------------------------------
+-- Zone: Arrapago_Reef (54)
+-----------------------------------
+local ID = require('scripts/zones/Arrapago_Reef/IDs')
+require('scripts/globals/npc_util')
+require('scripts/globals/quests')
+require('scripts/globals/zone')
+-----------------------------------
+local zoneObject = {}
+
+zoneObject.onInitialize = function(zone)
+    zone:registerTriggerArea(1, -462, -4, -420, -455, -1, -392) -- approach the Cutter
+end
+
+zoneObject.onZoneIn = function(player, prevZone)
+    local cs = -1
+
+    if
+        player:getXPos() == 0 and
+        player:getYPos() == 0 and
+        player:getZPos() == 0
+    then
+        player:setPos(-456, -3, -405, 64)
+    end
+
+    if
+        prevZone == xi.zone.THE_ASHU_TALIF and
+        player:getCharVar("Quest[6][26]Prog") == 3
+    then
+        cs = 238
+    elseif prevZone == xi.zone.ILRUSI_ATOLL then
+        player:setPos(26, -7, 606, 222)
+    end
+
+    return cs
+end
+
+zoneObject.afterZoneIn = function(player)
+    player:entityVisualPacket("1pb1")
+    player:entityVisualPacket("2pb1")
+end
+
+zoneObject.onTriggerAreaEnter = function(player, triggerArea)
+    if
+        player:getQuestStatus(xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.AGAINST_ALL_ODDS) == QUEST_ACCEPTED and
+        player:getCharVar("Quest[6][26]Prog") == 1
+    then
+        player:startEvent(237)
+    end
+end
+
+zoneObject.onEventUpdate = function(player, csid, option)
+end
+
+zoneObject.onEventFinish = function(player, csid, option)
+    if csid == 108 then -- enter instance: illrusi atoll
+        player:setPos(0, 0, 0, 0, 55)
+    elseif csid == 222 then -- Enter instance: Black coffin
+        player:setPos(0, 0, 0, 0, 60)
+    elseif csid == 237 then
+        player:startEvent(240)
+    elseif csid == 238 then
+        npcUtil.completeQuest(player, xi.quest.log_id.AHT_URHGAN, xi.quest.id.ahtUrhgan.AGAINST_ALL_ODDS, { item = xi.items.CORSAIRS_TRICORNE, var = "Quest[6][26]Prog" })
+    elseif csid == 240 then
+        player:setCharVar("Quest[6][26]Prog", 2)
+    end
+end
+
+return zoneObject
