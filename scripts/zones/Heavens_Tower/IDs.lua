@@ -29,7 +29,7 @@ zones[xi.zone.HEAVENS_TOWER] =
         FISHING_MESSAGE_OFFSET        = 7377, -- You can't fish here.
         CELEBRATORY_GOODS             = 9110, -- An assortment of celebratory goods is available for purchase.
         OBTAINED_NUM_KEYITEMS         = 9188, -- Obtained key item: <number> <keyitem>!
-        NOT_ACQUAINTED                = 9190, -- I'm sorry, but I don't believe we're acquainted. Please leave me be.
+        NOT_ACQUAINTED                = 9194, -- I'm sorry, but I don't believe we're acquainted. Please leave me be.
     },
     mob =
     {
